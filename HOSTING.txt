@@ -44,3 +44,11 @@ Updating the live site (rebuild + GitHub Pages)
 
 If you only change index.html or favicon.svg, commit those files; you only need
 build-web.sh when game.java changed.
+
+If game.jar returns 404 on GitHub Pages
+----------------------------------------
+1. Ensure docs/game.jar is committed and pushed (git does not ignore it by default).
+2. index.html uses overrideDocumentBase so CheerpJ loads JARs from the same folder
+   as the page (fixes Project Pages at /repo-name/ vs site root).
+3. Open the deployed JAR directly in the browser; you should get a download, not 404:
+   https://YOUR_USER.github.io/YOUR_REPO/game.jar

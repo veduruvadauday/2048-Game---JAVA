@@ -27,3 +27,20 @@ Desktop Java (full MySQL)
   ./run.sh
 
 Other hosts: Netlify / Cloudflare Pages can deploy the docs/ folder the same way.
+
+Updating the live site (rebuild + GitHub Pages)
+-----------------------------------------------
+1. Edit game.java (and docs/index.html if you change the page).
+2. From the project root:
+     ./build-web.sh
+   This refreshes docs/game.jar (and recompiles game.class in the repo root).
+3. Commit what changed, especially under docs/:
+     git add docs/game.jar docs/index.html game.java
+     git commit -m "Rebuild web JAR / update game"
+     git push
+4. Wait 1–2 minutes, then open your Pages URL in a private/incognito window or
+   hard-refresh (Cmd+Shift+R / Ctrl+Shift+R) so the browser does not use an old
+   game.jar from cache.
+
+If you only change index.html or favicon.svg, commit those files; you only need
+build-web.sh when game.java changed.

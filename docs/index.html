@@ -31,11 +31,19 @@
   </div>
   <div id="cjframe" aria-label="CheerpJ display"></div>
   <script type="module">
-    // Project Pages URL is https://user.github.io/REPO/ — CheerpJ must resolve /app/… under that path, not domain root.
-    const docBase = new URL(".", window.location.href).href;
-    await cheerpjInit({ version: 17, overrideDocumentBase: docBase });
+    // /app/foo.jar maps to https://ORIGIN/foo.jar (see CheerpJ docs). Project Pages is ORIGIN/REPO/, so use /app/REPO/game.jar (not /app/game.jar).
+    function cheerpAppJarPath(fileName) {
+      let p = window.location.pathname.replace(/\/$/, "");
+      const last = p.split("/").pop() || "";
+      if (/\.[a-zA-Z0-9]+$/.test(last)) {
+        p = p.replace(/\/[^/]+$/, "");
+      }
+      const prefix = p && p !== "/" ? p : "";
+      return "/app" + prefix + "/" + fileName;
+    }
+    await cheerpjInit({ version: 17 });
     cheerpjCreateDisplay(-1, -1, document.getElementById("cjframe"));
-    await cheerpjRunJar("/app/game.jar");
+    await cheerpjRunJar(cheerpAppJarPath("game.jar"));
   </script>
 </body>
 </html>

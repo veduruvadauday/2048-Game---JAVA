@@ -48,7 +48,10 @@ build-web.sh when game.java changed.
 If game.jar returns 404 on GitHub Pages
 ----------------------------------------
 1. Ensure docs/game.jar is committed and pushed (git does not ignore it by default).
-2. index.html uses overrideDocumentBase so CheerpJ loads JARs from the same folder
-   as the page (fixes Project Pages at /repo-name/ vs site root).
-3. Open the deployed JAR directly in the browser; you should get a download, not 404:
+2. CheerpJ maps /app/X to https://ORIGIN/X (not relative to the HTML page). For a
+   project site at https://USER.github.io/REPO/, the JAR must load as
+   https://USER.github.io/REPO/game.jar — index.html builds /app/REPO/game.jar
+   from the URL path automatically.
+3. Open the deployed JAR directly; you should get a download, not 404:
    https://YOUR_USER.github.io/YOUR_REPO/game.jar
+4. docs/.nojekyll is included so GitHub Pages does not run Jekyll on this folder.

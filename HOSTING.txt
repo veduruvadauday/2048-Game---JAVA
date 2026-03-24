@@ -1,0 +1,27 @@
+Play in the browser (free static hosting)
+=========================================
+
+Your Swing/Java game cannot run inside a normal website. This repo includes a
+browser version at: docs/index.html
+
+GitHub Pages (free)
+-------------------
+1. Put this folder in a GitHub repository (github.com → New repository → upload
+   or use git init / add / commit / push).
+2. On GitHub: Settings → Pages → Build and deployment → Source: "Deploy from a branch".
+3. Branch: main (or master), Folder: /docs → Save.
+4. After a minute, the site will be at:
+   https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/
+
+Other free hosts (upload the "docs" folder or point them at docs/)
+--------------------------------------------------------------------
+- Cloudflare Pages: connect repo or drag-and-drop the docs folder.
+- Netlify: drag the docs folder onto app.netlify.com/drop.
+
+Best score in the browser is stored in the visitor's browser (localStorage), not MySQL.
+
+Running the Java version online
+===============================
+Swing needs a desktop. Free options:
+- GitHub Releases: attach a runnable JAR and tell people to install Java and run it.
+- Replit: create a Java Repl and paste/upload the project (Swing support varies).

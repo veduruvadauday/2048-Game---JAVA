@@ -31,7 +31,9 @@
   </div>
   <div id="cjframe" aria-label="CheerpJ display"></div>
   <script type="module">
-    await cheerpjInit({ version: 17 });
+    // Project Pages URL is https://user.github.io/REPO/ — CheerpJ must resolve /app/… under that path, not domain root.
+    const docBase = new URL(".", window.location.href).href;
+    await cheerpjInit({ version: 17, overrideDocumentBase: docBase });
     cheerpjCreateDisplay(-1, -1, document.getElementById("cjframe"));
     await cheerpjRunJar("/app/game.jar");
   </script>

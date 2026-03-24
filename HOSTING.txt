@@ -1,27 +1,29 @@
 Play in the browser (free static hosting)
 =========================================
 
-Your Swing/Java game cannot run inside a normal website. This repo includes a
-browser version at: docs/index.html
+docs/index.html runs your real Java/Swing game using CheerpJ (bytecode in the
+browser), not a rewrite. Before you push, build the JAR:
+
+  chmod +x build-web.sh && ./build-web.sh
+
+That creates docs/game.jar from game.java. Commit docs/game.jar + docs/index.html.
 
 GitHub Pages (free)
 -------------------
-1. Put this folder in a GitHub repository (github.com → New repository → upload
-   or use git init / add / commit / push).
-2. On GitHub: Settings → Pages → Build and deployment → Source: "Deploy from a branch".
-3. Branch: main (or master), Folder: /docs → Save.
-4. After a minute, the site will be at:
-   https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/
+1. Put this folder in a GitHub repository.
+2. Settings → Pages → Source: Deploy from a branch; Folder: /docs.
+3. Site URL: https://YOUR_USERNAME.github.io/YOUR_REPO_NAME/
 
-Other free hosts (upload the "docs" folder or point them at docs/)
---------------------------------------------------------------------
-- Cloudflare Pages: connect repo or drag-and-drop the docs folder.
-- Netlify: drag the docs folder onto app.netlify.com/drop.
+CheerpJ loads from leaningtech.com; see their terms for production use.
+MySQL is not bundled for the web build — the game already handles DB failure.
 
-Best score in the browser is stored in the visitor's browser (localStorage), not MySQL.
+Test locally (must be HTTP, not file://)
+----------------------------------------
+  cd docs && npx --yes http-server -p 8080
+  Open http://127.0.0.1:8080/
 
-Running the Java version online
-===============================
-Swing needs a desktop. Free options:
-- GitHub Releases: attach a runnable JAR and tell people to install Java and run it.
-- Replit: create a Java Repl and paste/upload the project (Swing support varies).
+Desktop Java (full MySQL)
+=========================
+  ./run.sh
+
+Other hosts: Netlify / Cloudflare Pages can deploy the docs/ folder the same way.

@@ -1,346 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>2048</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2048 — Java (Swing)</title>
+  <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
   <style>
-    :root {
-      --bg: #faf8ef;
-      --panel: #bbada0;
-      --empty: #cdc1b4;
-      --text-dark: #776e65;
-      --text-light: #f9f6f2;
+    html, body { margin: 0; height: 100%; }
+    body { display: flex; flex-direction: column; font-family: system-ui, sans-serif; }
+    #banner {
+      font-size: 0.85rem;
+      padding: 0.5rem 1rem;
+      background: #f4f1ea;
+      color: #444;
+      border-bottom: 1px solid #ddd;
+      line-height: 1.4;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100dvh;
-      font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    h1 {
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      font-weight: 700;
-      margin: 0.25rem 0 0;
-    }
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 28rem;
-      margin-bottom: 0.75rem;
-    }
-    .scores {
-      display: flex;
-      gap: 0.5rem;
-    }
-    .score-box {
-      background: var(--panel);
-      color: var(--text-light);
-      padding: 0.35rem 0.75rem;
-      border-radius: 4px;
-      text-align: center;
-      min-width: 4.5rem;
-    }
-    .score-box span {
-      display: block;
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      opacity: 0.95;
-    }
-    .score-box strong {
-      font-size: 1.35rem;
-    }
-    button#new {
-      background: #8f7a66;
-      color: var(--text-light);
-      border: none;
-      padding: 0.55rem 1rem;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
-    button#new:active { filter: brightness(1.08); }
-    .hint {
-      text-align: center;
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-      min-height: 1.25em;
-    }
-    .board-wrap {
-      background: var(--panel);
-      padding: 0.5rem;
-      border-radius: 6px;
-      touch-action: none;
-    }
-    .board {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.5rem;
-      width: min(90vw, 22rem);
-      aspect-ratio: 1;
-    }
-    .cell {
-      background: var(--empty);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: clamp(1.1rem, 5.5vw, 1.75rem);
-    }
-    .cell[data-v="2"] { background: #eee4da; color: var(--text-dark); }
-    .cell[data-v="4"] { background: #ede0c8; color: var(--text-dark); }
-    .cell[data-v="8"] { background: #f2b179; color: var(--text-light); }
-    .cell[data-v="16"] { background: #f59563; color: var(--text-light); }
-    .cell[data-v="32"] { background: #f67c5f; color: var(--text-light); }
-    .cell[data-v="64"] { background: #f65e3b; color: var(--text-light); }
-    .cell[data-v="128"] { background: #edcf72; color: var(--text-dark); font-size: clamp(1rem, 4.5vw, 1.5rem); }
-    .cell[data-v="256"] { background: #edcc61; color: var(--text-dark); font-size: clamp(1rem, 4.5vw, 1.5rem); }
-    .cell[data-v="512"] { background: #edc850; color: var(--text-dark); font-size: clamp(1rem, 4.5vw, 1.5rem); }
-    .cell[data-v="1024"],
-    .cell[data-v="2048"] { background: #edc53f; color: var(--text-dark); font-size: clamp(0.85rem, 4vw, 1.35rem); }
-    .cell[data-v="4096"],
-    .cell[data-v="8192"] { background: #3c3a32; color: var(--text-light); font-size: clamp(0.8rem, 3.8vw, 1.25rem); }
-    footer {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      opacity: 0.7;
-      text-align: center;
-      max-width: 24rem;
-    }
+    #banner a { color: #2563eb; }
+    #cjframe { flex: 1; min-height: 520px; width: 100%; }
   </style>
 </head>
 <body>
-  <h1>2048</h1>
-  <div class="row">
-    <div class="scores">
-      <div class="score-box"><span>Score</span><strong id="score">0</strong></div>
-      <div class="score-box"><span>Best</span><strong id="best">0</strong></div>
-    </div>
-    <button type="button" id="new">New game</button>
+  <div id="banner">
+    This is your <strong>original Java / Swing</strong> game, running in the browser via
+    <a href="https://cheerpj.com/" target="_blank" rel="noopener">CheerpJ</a>
+    (Java bytecode + WASM). First load can take a short while.
+    MySQL high scores only apply to the <strong>desktop</strong> build (<code>./run.sh</code>);
+    here the app runs without the JDBC driver, same as when the DB is offline.
   </div>
-  <p class="hint" id="hint">Join the numbers to get <strong>2048</strong>. Use arrow keys or swipe.</p>
-  <div class="board-wrap" id="wrap" aria-label="Game board">
-    <div class="board" id="board"></div>
-  </div>
-  <footer>Browser build for free static hosting. Desktop Java version is in the same repository.</footer>
-
-  <script>
-(function () {
-  const SIZE = 4;
-  const boardEl = document.getElementById("board");
-  const scoreEl = document.getElementById("score");
-  const bestEl = document.getElementById("best");
-  const hintEl = document.getElementById("hint");
-  const wrap = document.getElementById("wrap");
-
-  const BEST_KEY = "2048-best";
-
-  let grid = [];
-  let score = 0;
-  let won = false;
-  let over = false;
-
-  function loadBest() {
-    const v = parseInt(localStorage.getItem(BEST_KEY) || "0", 10);
-    return Number.isFinite(v) ? v : 0;
-  }
-  let best = loadBest();
-  bestEl.textContent = String(best);
-
-  function emptyGrid() {
-    return Array.from({ length: SIZE }, () => Array(SIZE).fill(0));
-  }
-
-  function randomTile() {
-    return Math.random() < 0.9 ? 2 : 4;
-  }
-
-  function freeCells() {
-    const list = [];
-    for (let r = 0; r < SIZE; r++)
-      for (let c = 0; c < SIZE; c++)
-        if (grid[r][c] === 0) list.push([r, c]);
-    return list;
-  }
-
-  function addRandomTile() {
-    const free = freeCells();
-    if (!free.length) return false;
-    const [r, c] = free[Math.floor(Math.random() * free.length)];
-    grid[r][c] = randomTile();
-    return true;
-  }
-
-  function render() {
-    boardEl.innerHTML = "";
-    for (let r = 0; r < SIZE; r++) {
-      for (let c = 0; c < SIZE; c++) {
-        const v = grid[r][c];
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        if (v) {
-          cell.dataset.v = String(v);
-          cell.textContent = String(v);
-        }
-        boardEl.appendChild(cell);
-      }
-    }
-    scoreEl.textContent = String(score);
-    if (score > best) {
-      best = score;
-      localStorage.setItem(BEST_KEY, String(best));
-    }
-    bestEl.textContent = String(best);
-  }
-
-  function gridsEqual(a, b) {
-    for (let r = 0; r < SIZE; r++)
-      for (let c = 0; c < SIZE; c++)
-        if (a[r][c] !== b[r][c]) return false;
-    return true;
-  }
-
-  function slideLine(line) {
-    const nums = line.filter((x) => x !== 0);
-    const out = [];
-    let gained = 0;
-    for (let i = 0; i < nums.length; i++) {
-      if (i + 1 < nums.length && nums[i] === nums[i + 1]) {
-        const m = nums[i] * 2;
-        out.push(m);
-        gained += m;
-        if (m === 2048) won = true;
-        i++;
-      } else {
-        out.push(nums[i]);
-      }
-    }
-    while (out.length < SIZE) out.push(0);
-    return { line: out, gained };
-  }
-
-  function move(dir) {
-    if (over) return;
-    const before = grid.map((row) => row.slice());
-    let gained = 0;
-
-    if (dir === "left") {
-      for (let r = 0; r < SIZE; r++) {
-        const { line, gained: g } = slideLine(grid[r]);
-        grid[r] = line;
-        gained += g;
-      }
-    } else if (dir === "right") {
-      for (let r = 0; r < SIZE; r++) {
-        const { line, gained: g } = slideLine(grid[r].slice().reverse());
-        grid[r] = line.reverse();
-        gained += g;
-      }
-    } else if (dir === "up") {
-      for (let c = 0; c < SIZE; c++) {
-        const col = [];
-        for (let r = 0; r < SIZE; r++) col.push(grid[r][c]);
-        const { line, gained: g } = slideLine(col);
-        for (let r = 0; r < SIZE; r++) grid[r][c] = line[r];
-        gained += g;
-      }
-    } else if (dir === "down") {
-      for (let c = 0; c < SIZE; c++) {
-        const col = [];
-        for (let r = 0; r < SIZE; r++) col.push(grid[r][c]);
-        const { line, gained: g } = slideLine(col.reverse());
-        const fixed = line.reverse();
-        for (let r = 0; r < SIZE; r++) grid[r][c] = fixed[r];
-        gained += g;
-      }
-    }
-
-    if (gridsEqual(before, grid)) return;
-
-    score += gained;
-    addRandomTile();
-    render();
-
-    if (won && !hintEl.dataset.wonShown) {
-      hintEl.dataset.wonShown = "1";
-      hintEl.innerHTML = "You hit <strong>2048</strong> — keep going or start fresh.";
-    }
-
-    if (!canMove()) {
-      over = true;
-      hintEl.textContent = "Game over — press New game.";
-    }
-  }
-
-  function canMove() {
-    if (freeCells().length) return true;
-    for (let r = 0; r < SIZE; r++)
-      for (let c = 0; c < SIZE; c++) {
-        const v = grid[r][c];
-        if (c + 1 < SIZE && grid[r][c + 1] === v) return true;
-        if (r + 1 < SIZE && grid[r + 1][c] === v) return true;
-      }
-    return false;
-  }
-
-  function newGame() {
-    grid = emptyGrid();
-    score = 0;
-    won = false;
-    over = false;
-    delete hintEl.dataset.wonShown;
-    hintEl.innerHTML = "Join the numbers to get <strong>2048</strong>. Use arrow keys or swipe.";
-    addRandomTile();
-    addRandomTile();
-    render();
-  }
-
-  document.getElementById("new").addEventListener("click", newGame);
-
-  document.addEventListener("keydown", (e) => {
-    const k = e.key;
-    if (k === "ArrowLeft") { e.preventDefault(); move("left"); }
-    else if (k === "ArrowRight") { e.preventDefault(); move("right"); }
-    else if (k === "ArrowUp") { e.preventDefault(); move("up"); }
-    else if (k === "ArrowDown") { e.preventDefault(); move("down"); }
-  });
-
-  let tx = 0, ty = 0, tracking = false;
-  wrap.addEventListener("pointerdown", (e) => {
-    tracking = true;
-    tx = e.clientX;
-    ty = e.clientY;
-    wrap.setPointerCapture(e.pointerId);
-  });
-  wrap.addEventListener("pointerup", (e) => {
-    if (!tracking) return;
-    tracking = false;
-    const dx = e.clientX - tx;
-    const dy = e.clientY - ty;
-    const absX = Math.abs(dx);
-    const absY = Math.abs(dy);
-    if (Math.max(absX, absY) < 24) return;
-    if (absX > absY) move(dx > 0 ? "right" : "left");
-    else move(dy > 0 ? "down" : "up");
-  });
-  wrap.addEventListener("pointercancel", () => { tracking = false; });
-
-  newGame();
-})();
+  <div id="cjframe" aria-label="CheerpJ display"></div>
+  <script type="module">
+    await cheerpjInit();
+    cheerpjCreateDisplay(-1, -1, document.getElementById("cjframe"));
+    await cheerpjRunJar("/app/game.jar");
   </script>
 </body>
 </html>
